@@ -10,7 +10,7 @@ export default function GuestLayout({ children }) {
                 </Link>
             </div>
 
-            <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            <div className="w-full max-w-md px-6 py-4">
                 {children}
             </div>
         </div>

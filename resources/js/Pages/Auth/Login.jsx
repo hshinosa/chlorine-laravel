@@ -1,4 +1,3 @@
-// filepath: d:\Code\chlorine-laravel\resources\js\Pages\Auth\Login.jsx
 import { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
@@ -8,7 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -36,7 +35,7 @@ export default function Login({ status, canResetPassword }) {
             <div className="w-full max-w-md mx-auto">
                 <div className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
                     <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-                        Login to Chlorine
+                        Login ke Chlorine
                     </h2>
 
                     <form onSubmit={submit}>
@@ -100,7 +99,7 @@ export default function Login({ status, canResetPassword }) {
                                 href={route('dashboard')}
                                 className="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                ← Back to Home
+                                ← Kembali ke Dashboard
                             </Link>
                         </div>
                     </form>

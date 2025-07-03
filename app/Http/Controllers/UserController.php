@@ -151,7 +151,7 @@ class UserController extends Controller
                         ->with('success', 'User berhasil diperbarui');
                 }
             }
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             if ($request->wantsJson()) {
                 $response = response()->json([
                     'success' => false,

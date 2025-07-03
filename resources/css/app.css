@@ -1,3 +1,474 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+/* Mobile: 0-767px */
+/* Tablet: 768-1023px */ 
+/* Desktop: 1024px+ */
+
+/* ===== SIDEBAR RESPONSIVE STYLES ===== */
+@layer components {
+    /* Mobile Sidebar - Hidden by default */
+    .sidebar-mobile {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .sidebar-mobile.open {
+        transform: translateX(0);
+    }
+    
+    /* Tablet & Desktop Sidebar */
+    .sidebar-desktop {
+        transform: translateX(0);
+    }
+    
+    /* Sidebar overlay for mobile */
+    .sidebar-overlay {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
+    }
+}
+
+/* ===== MOBILE SPECIFIC STYLES ===== */
+@media (max-width: 767px) {
+    /* Hide desktop navigation */
+    .nav-desktop {
+        display: none;
+    }
+    
+    /* Mobile hamburger menu */
+    .mobile-menu-button {
+        display: flex;
+    }
+    
+    /* Sidebar adjustments for mobile */
+    .sidebar-container {
+        width: 280px;
+        max-width: 80vw;
+    }
+    
+    /* Content padding for mobile */
+    .main-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    /* Card grid mobile layout */
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Table responsive */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-container table {
+        min-width: 600px;
+    }
+    
+    /* Mobile typography */
+    .mobile-text-sm {
+        font-size: 0.875rem;
+    }
+    
+    .mobile-text-xs {
+        font-size: 0.75rem;
+    }
+    
+    /* Button adjustments for mobile */
+    .mobile-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Form inputs mobile */
+    .mobile-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* ===== TABLET SPECIFIC STYLES ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Tablet sidebar */
+    .sidebar-container {
+        width: 240px;
+    }
+    
+    /* Content adjustments */
+    .main-content {
+        margin-left: 0;
+    }
+    
+    /* Card grid tablet layout */
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* Tablet navigation */
+    .tablet-nav {
+        padding: 0 1.5rem;
+    }
+    
+    /* Table adjustments */
+    .table-container {
+        overflow-x: auto;
+    }
+}
+
+/* ===== DESKTOP SPECIFIC STYLES ===== */
+@media (min-width: 1024px) {
+    /* Hide mobile menu button */
+    .mobile-menu-button {
+        display: none;
+    }
+    
+    /* Desktop sidebar */
+    .sidebar-container {
+        position: static;
+        transform: translateX(0);
+        width: 256px;
+    }
+    
+    /* Main content with sidebar */
+    .main-content-with-sidebar {
+        margin-left: 0;
+    }
+    
+    /* Card grid desktop layout */
+    .dashboard-cards {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+    
+    /* Desktop navigation */
+    .desktop-nav {
+        padding: 0 2rem;
+    }
+    
+    /* Table full width */
+    .table-container {
+        overflow-x: visible;
+    }
+}
+
+/* ===== UTILITY CLASSES ===== */
+@layer utilities {
+    /* Smooth transitions */
+    .transition-transform-300 {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .transition-colors-200 {
+        transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
+    
+    /* Z-index utilities */
+    .z-sidebar {
+        z-index: 40;
+    }
+    
+    .z-overlay {
+        z-index: 30;
+    }
+    
+    .z-dropdown {
+        z-index: 50;
+    }
+    
+    /* Safe area for mobile devices with notch */
+    .safe-top {
+        padding-top: env(safe-area-inset-top);
+    }
+    
+    .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Touch targets for mobile */
+    .touch-target {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Scrollbar styling */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+    
+    /* Focus styles for accessibility */
+    .focus-ring {
+        @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    }
+    
+    /* Card shadows responsive */
+    .card-shadow {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    .card-shadow-hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* ===== RESPONSIVE GRID SYSTEM ===== */
+@layer components {
+    .responsive-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 640px) {
+        .responsive-grid-sm {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .responsive-grid-md {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .responsive-grid-lg {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .sidebar-container {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .card-shadow,
+    .card-shadow-hover {
+        box-shadow: none !important;
+    }
+}
+
+/* ===== DARK MODE SUPPORT (Optional) ===== */
+@media (prefers-color-scheme: dark) {
+    .dark-mode-auto .sidebar-container {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .dark-mode-auto .main-content {
+        background-color: #111827;
+        color: #f9fafb;
+    }
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+    .transition-transform-300,
+    .transition-colors-200,
+    .transition-transform {
+        transition: none !important;
+    }
+}
+
+/* ===== HIGH CONTRAST SUPPORT ===== */
+@media (prefers-contrast: high) {
+    .sidebar-container {
+        border: 2px solid;
+    }
+    
+    .card-shadow,
+    .card-shadow-hover {
+        border: 1px solid;
+    }
+}
+
+/* ===== ENHANCED STICKY SIDEBAR STYLES ===== */
+@layer components {
+    /* Desktop Sidebar Sticky */
+    .sidebar-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Sidebar Header Sticky */
+    .sidebar-header-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    /* Sidebar Content Scrollable */
+    .sidebar-content-scroll {
+        flex: 1;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 #f1f5f9;
+    }
+    
+    /* Sidebar Footer Sticky */
+    .sidebar-footer-sticky {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    /* Navigation Sticky Enhanced */
+    .nav-sticky-enhanced {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(8px);
+        background-color: rgba(255, 255, 255, 0.95);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* ===== RESPONSIVE STICKY BEHAVIOR ===== */
+@media (min-width: 1024px) {
+    /* Desktop - Sidebar is sticky */
+    .sidebar-container {
+        position: sticky !important;
+        top: 0;
+        height: 100vh;
+    }
+    
+    /* Desktop - Main content flows normally */
+    .main-content-desktop {
+        flex: 1;
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 1023px) {
+    /* Mobile/Tablet - Sidebar is fixed overlay */
+    .sidebar-container {
+        position: fixed !important;
+        height: 100vh;
+    }
+    
+    /* Mobile - Navigation is sticky */
+    .nav-mobile-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 60; /* Higher than sidebar on mobile */
+    }
+}
+
+/* ===== SCROLL BEHAVIOR ===== */
+@layer utilities {
+    /* Smooth scrolling for sidebar content */
+    .sidebar-smooth-scroll {
+        scroll-behavior: smooth;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Hide scrollbar but keep functionality */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Custom scrollbar for sidebar */
+    .sidebar-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .sidebar-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .sidebar-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 2px;
+    }
+    
+    .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+}
+
+/* ===== ANIMATION ENHANCEMENTS ===== */
+@layer components {
+    /* Sidebar slide animation */
+    .sidebar-slide-in {
+        animation: slideInLeft 0.3s ease-out;
+    }
+    
+    .sidebar-slide-out {
+        animation: slideOutLeft 0.3s ease-in;
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideOutLeft {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-100%);
+        }
+    }
+    
+    /* Navigation fade effect on scroll */
+    .nav-fade-on-scroll {
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .nav-fade-on-scroll.scrolled {
+        background-color: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+}
