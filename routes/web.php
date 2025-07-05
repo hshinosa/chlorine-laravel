@@ -9,10 +9,24 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// News Routes (Front-end only)
+Route::get('/', function () {
+    return Inertia::render('News/Home');
+})->name('news.home');
 
-Route::get('/dashboard', function () {
-    return redirect('/');
+Route::get('/artikel/{slug}', function ($slug) {
+    return Inertia::render('News/Article', ['slug' => $slug]);
+})->name('news.article');
+
+Route::get('/kategori/{category}', function ($category) {
+    return Inertia::render('News/Category', ['category' => $category]);
+})->name('news.category');
+
+// Admin Dashboard Routes
+Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/admin/dashboard', function () {
+    return redirect('/admin');
 });
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

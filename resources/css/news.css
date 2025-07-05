@@ -1,0 +1,190 @@
+/* Custom styles untuk aplikasi berita */
+
+/* Line clamp utilities */
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* Custom prose styles untuk artikel */
+.prose {
+    max-width: none;
+}
+
+.prose h3 {
+    @apply text-xl font-bold text-gray-900 mt-8 mb-4;
+}
+
+.prose p {
+    @apply mb-4 text-gray-700 leading-relaxed;
+}
+
+.prose ul {
+    @apply mb-4 ml-6 space-y-2;
+}
+
+.prose li {
+    @apply text-gray-700;
+    list-style-type: disc;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom animation untuk loading */
+@keyframes pulse-slow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsive image container */
+.news-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.news-image-container img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.news-image-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Custom shadow untuk cards */
+.news-card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.news-card-shadow:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom gradient untuk overlay */
+.news-gradient-overlay {
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        transparent 100%
+    );
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+    .mobile-nav-open {
+        overflow: hidden;
+    }
+    
+    .mobile-nav-menu {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .mobile-nav-menu.open {
+        transform: translateX(0);
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-full-width {
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    .dark-mode-support {
+        @apply bg-gray-900 text-gray-100;
+    }
+    
+    .dark-mode-support .news-card {
+        @apply bg-gray-800 border-gray-700;
+    }
+    
+    .dark-mode-support .news-text {
+        @apply text-gray-300;
+    }
+}
+
+/* Accessibility improvements */
+.focus-visible-only:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* Custom scrollbar untuk webkit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Performance optimizations */
+.will-change-transform {
+    will-change: transform;
+}
+
+.will-change-opacity {
+    will-change: opacity;
+}

@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './news.css';
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 /* Mobile: 0-767px */
