@@ -1,11 +1,8 @@
-const getCurrentRouteName = () => {
-    try {
-        return route().current();
-    } catch {
-        return window.location.pathname.replace('/', '') || 'dashboard';
-    }
-};
-
+/* 
+* Sidebar Items
+* This file contains the sidebar items used in the application.
+* Each item has a name, icon, route, and optional submenu.
+*/
 export const sidebarItems = [
     {
         name: "Beranda",
@@ -21,7 +18,13 @@ export const sidebarItems = [
     {
         name: "Layanan",
         icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-        route: "#"
+        route: "#",
+        hasSubmenu: true,
+        current: false,
+        submenu: [
+            { name: "Daftar Layanan", route: "#" },
+            { name: "Kategori Layanan", route: "categories.index" }
+        ]
     },
     {
         name: "Permohonan Saya",
@@ -55,13 +58,20 @@ export const sidebarItems = [
     }
 ];
 
+/*
+* Menu Configuration
+* This object contains the configuration for the main menu.
+* It includes the title and classes for active and inactive menu items.
+*/
 export const menuConfig = {
     title: "MAIN MENU",
     activeClass: "bg-blue-50 text-blue-700 border-r-2 border-blue-700",
     inactiveClass: "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
 };
 
-// Helper function to get menu items with current state
+/*
+* Helper function to get sidebar items with current state
+*/
 export const getSidebarItemsWithCurrentState = (currentRoute) => {
     if (!currentRoute) {
         currentRoute = getCurrentRouteName();
@@ -82,16 +92,32 @@ export const getSidebarItemsWithCurrentState = (currentRoute) => {
     });
 };
 
-// Helper function to get default sidebar items (for fallback)
+/*
+* Get default sidebar items with current state
+*/
 export const getDefaultSidebarItems = () => {
     return getSidebarItemsWithCurrentState();
 };
 
-// Helper function to check if route exists
+/*
+* Check if a route is valid
+* This function checks if a given route name exists in the application.
+*/
 export const isValidRoute = (routeName) => {
     try {
         return route().has(routeName);
     } catch {
         return false;
+    }
+};
+
+/*
+* Get the current route name
+*/
+const getCurrentRouteName = () => {
+    try {
+        return route().current();
+    } catch {
+        return window.location.pathname.replace('/', '') || 'dashboard';
     }
 };

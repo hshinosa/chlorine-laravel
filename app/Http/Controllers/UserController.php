@@ -6,17 +6,29 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
-    /** @var UserService */
+    /** @var \App\Services\UserService */
     protected $userService;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param \App\Services\UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response|\Inertia\Response
+     */
     public function index()
     {
         $response = null;
@@ -29,7 +41,12 @@ class UserController extends Controller
                     'data' => $users,
                 ]);
             } else {
-                $response = view('users.index', compact('users'));
+                $response = Inertia::render('Users/Index', [
+                    'users' => $users,
+                    'auth' => [
+                        'user' => auth()->user(),
+                    ],
+                ]);
             }
         } catch (\Exception $e) {
             if (request()->wantsJson()) {
@@ -39,12 +56,35 @@ class UserController extends Controller
                     'error' => $e->getMessage()
                 ], 500);
             } else {
-                $response = back()->with('error', 'Gagal mengambil data pengguna');
+                $response = back()->with(
+                    'error',
+                    'Gagal mengambil data pengguna'
+                );
             }
         }
         return $response;
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Inertia\Response
+     */
+    public function create(): Response
+    {
+        return Inertia::render('Users/Create', [
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\StoreUserRequest $request
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
     public function store(StoreUserRequest $request)
     {
         $response = null;
@@ -80,6 +120,12 @@ class UserController extends Controller
         return $response;
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response|\Inertia\Response
+     */
     public function show(int $id)
     {
         $response = null;
@@ -93,7 +139,10 @@ class UserController extends Controller
                         'message' => 'Pengguna tidak ditemukan',
                     ], 404);
                 } else {
-                    $response = back()->with('error', 'Pengguna tidak ditemukan');
+                    $response = back()->with(
+                        'error',
+                        'Pengguna tidak ditemukan'
+                    );
                 }
             } else {
                 if (request()->wantsJson()) {
@@ -102,7 +151,12 @@ class UserController extends Controller
                         'data' => $user
                     ]);
                 } else {
-                    $response = view('users.show', compact('user'));
+                    $response = Inertia::render('Users/Show', [
+                        'user' => $user,
+                        'auth' => [
+                            'user' => auth()->user(),
+                        ],
+                    ]);
                 }
             }
         } catch (\Exception $e) {
@@ -119,6 +173,35 @@ class UserController extends Controller
         return $response;
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $id
+     * @return \Inertia\Response
+     */
+    public function edit(int $id): Response
+    {
+        $user = $this->userService->findById($id);
+        
+        if (!$user) {
+            abort(404, 'Pengguna tidak ditemukan');
+        }
+
+        return Inertia::render('Users/Edit', [
+            'user' => $user,
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \App\Http\Requests\UpdateUserRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
     public function update(UpdateUserRequest $request, int $id)
     {
         $response = null;
@@ -175,6 +258,12 @@ class UserController extends Controller
         return $response;
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
     public function destroy(int $id)
     {
         $response = null;
@@ -188,7 +277,10 @@ class UserController extends Controller
                         'message' => 'Pengguna tidak ditemukan atau gagal dihapus',
                     ], 404);
                 } else {
-                    $response = back()->with('error', 'Pengguna tidak ditemukan atau gagal dihapus');
+                    $response = back()->with(
+                        'error',
+                        'Pengguna tidak ditemukan atau gagal dihapus'
+                    );
                 }
             } else {
                 if (request()->wantsJson()) {

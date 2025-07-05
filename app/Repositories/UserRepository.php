@@ -13,22 +13,43 @@ class UserRepository implements UserRepositoryInterface
     /** @var User */
     protected $model;
 
-    
+    /**
+     * UserRepository constructor.
+     *
+     * @param User $user
+     */
     public function __construct(User $user)
     {
         $this->model = $user;
     }
 
+    /**
+     * Get all users.
+     *
+     * @return Collection
+     */
     public function getAllUsers(): Collection
     {
         return $this->model->all();
     }
 
+    /**
+     * Get user by ID.
+     *
+     * @param int $id
+     * @return Model|null
+     */
     public function getUserById(int $id): ?Model
     {
         return $this->model->find($id);
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param array $data
+     * @return Model
+     */
     public function createUser(array $data): Model
     {
         if (isset($data['password'])) {
@@ -38,6 +59,13 @@ class UserRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
+    /**
+     * Update an existing user.
+     *
+     * @param int $id
+     * @param array $data
+     * @return Model|null
+     */
     public function updateUser(int $id, array $data): ?Model
     {
         $user = User::find($id);
@@ -55,6 +83,12 @@ class UserRepository implements UserRepositoryInterface
         return $user->fresh();
     }
 
+    /**
+     * Delete a user.
+     *
+     * @param int $id
+     * @return bool
+     */
     public function deleteUser(int $id): bool
     {
         $user = User::find($id);

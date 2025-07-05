@@ -1,3 +1,8 @@
+/*
+* Dashboard Data
+* This file contains the data used in the dashboard components.
+*/
+
 export const dashboardCards = [
     {
         id: "lengkapi_profile",
@@ -9,13 +14,13 @@ export const dashboardCards = [
         description: "Lengkapi informasi profil Anda"
     },
     {
-        id: "lowongan_kerja",
-        title: "Lowongan Kerja",
+        id: "kelola_layanan",
+        title: "Kelola Layanan",
         icon: "chart",
-        bgColor: "bg-red-100",
-        iconColor: "text-red-600",
-        route: "#",
-        description: "Cari dan lamar lowongan kerja"
+        bgColor: "bg-green-100",
+        iconColor: "text-green-600",
+        route: "categories.index",
+        description: "Kelola layanan"
     },
     {
         id: "permohonan_saya",
@@ -23,21 +28,25 @@ export const dashboardCards = [
         icon: "document",
         bgColor: "bg-purple-100",
         iconColor: "text-purple-600",
-        route: "#",
+        route: null, // Placeholder untuk coming soon
         description: "Lihat status permohonan Anda"
     },
     {
         id: "survey_kepuasan",
         title: "Survey Kepuasan",
         icon: "survey",
-        bgColor: "bg-green-100",
-        iconColor: "text-green-600",
-        route: "#",
+        bgColor: "bg-orange-100",
+        iconColor: "text-orange-600",
+        route: null, // Placeholder untuk coming soon
         description: "Berikan feedback layanan"
     }
 ];
 
-// Icon paths untuk dashboard cards
+/*
+* Dashboard Icons
+* These icons are used in the dashboard cards.
+* They are simple SVG paths that represent different actions or sections.
+*/
 export const dashboardIcons = {
     profile: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
     chart: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",

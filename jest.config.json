@@ -1,0 +1,24 @@
+{
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/resources/js/tests/setupTests.js"],
+  "testMatch": [
+    "<rootDir>/resources/js/tests/**/*.test.{js,jsx}"
+  ],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/resources/js/$1"
+  },
+  "collectCoverageFrom": [
+    "resources/js/Components/**/*.{js,jsx}",
+    "resources/js/Pages/**/*.{js,jsx}",
+    "resources/js/Layouts/**/*.{js,jsx}",
+    "!resources/js/tests/**"
+  ],
+  "transform": {
+    "^.+\\.(js|jsx)$": "babel-jest"
+  },
+  "moduleFileExtensions": ["js", "jsx"],
+  "testPathIgnorePatterns": [
+    "<rootDir>/node_modules/",
+    "<rootDir>/vendor/"
+  ]
+}

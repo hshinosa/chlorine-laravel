@@ -26,15 +26,28 @@ export default {
             zIndex: {
                 '60': '60',
                 '70': '70',
+                'sidebar': '40',
+                'overlay': '30',
+                'dropdown': '50',
             },
             animation: {
-                'slide-in': 'slideIn 0.3s ease-out',
-                'fade-in': 'fadeIn 0.2s ease-out',
+                slideIn: 'slideIn 0.3s ease-out',
+                slideInLeft: 'slideInLeft 0.3s ease-out',
+                slideOutLeft: 'slideOutLeft 0.3s ease-in',
+                fadeIn: 'fadeIn 0.2s ease-out',
             },
             keyframes: {
                 slideIn: {
                     '0%': { transform: 'translateX(-100%)' },
                     '100%': { transform: 'translateX(0)' },
+                },
+                slideInLeft: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0)' },
+                },
+                slideOutLeft: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-100%)' },
                 },
                 fadeIn: {
                     '0%': { opacity: '0' },

@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { Link } from '@inertiajs/react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const DropDownContext = createContext();
 
@@ -11,11 +12,17 @@ const Dropdown = ({ children }) => {
         setOpen((previousState) => !previousState);
     };
 
+    const contextValue = useMemo(() => ({ open, setOpen, toggleOpen }), [open]);
+
     return (
-        <DropDownContext.Provider value={{ open, setOpen, toggleOpen }}>
+        <DropDownContext.Provider value={contextValue}>
             <div className="relative">{children}</div>
         </DropDownContext.Provider>
     );
+};
+
+Dropdown.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 const Trigger = ({ children }) => {
@@ -23,24 +30,26 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            <div onClick={toggleOpen} onKeyDown={toggleOpen} role="button" tabIndex="0">
+                {children}
+            </div>
 
             {open && (
-                <div
-                    className="fixed inset-0 z-40"
+                <button
+                    data-testid="dropdown-overlay"
+                    className="fixed inset-0 z-40 cursor-default"
                     onClick={() => setOpen(false)}
-                ></div>
+                ></button>
             )}
         </>
     );
 };
 
-const Content = ({
-    align = 'right',
-    width = '48',
-    contentClasses = 'py-1 bg-white',
-    children,
-}) => {
+Trigger.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -52,38 +61,40 @@ const Content = ({
     }
 
     let widthClasses = '';
-
     if (width === '48') {
         widthClasses = 'w-48';
+    } else {
+        widthClasses = `w-${width}`;
     }
 
     return (
-        <>
-            <Transition
-                show={open}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
+        <Transition
+            show={open}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+        >
+            <div
+                className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                onClick={() => setOpen(false)}
+                onKeyDown={() => setOpen(false)}
+                role="menu"
+                tabIndex="-1"
             >
-                <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
-                    onClick={() => setOpen(false)}
-                >
-                    <div
-                        className={
-                            `rounded-md ring-1 ring-black ring-opacity-5 ` +
-                            contentClasses
-                        }
-                    >
-                        {children}
-                    </div>
-                </div>
-            </Transition>
-        </>
+                <div className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}>{children}</div>
+            </div>
+        </Transition>
     );
+};
+
+Content.propTypes = {
+    align: PropTypes.string,
+    width: PropTypes.string,
+    contentClasses: PropTypes.string,
+    children: PropTypes.node.isRequired,
 };
 
 const DropdownLink = ({ className = '', children, ...props }) => {
@@ -98,6 +109,11 @@ const DropdownLink = ({ className = '', children, ...props }) => {
             {children}
         </Link>
     );
+};
+
+DropdownLink.propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node.isRequired,
 };
 
 Dropdown.Trigger = Trigger;

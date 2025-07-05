@@ -35,7 +35,10 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only(['email', 'password']), $request->boolean('remember'))) {
+        if (Auth::attempt(
+            $request->only(['email', 'password']),
+            $request->boolean('remember')
+        )) {
             $user = Auth::user();
             $token = $user->createToken('auth_token')->plainTextToken;
 
