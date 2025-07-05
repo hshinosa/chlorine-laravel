@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -129,35 +130,31 @@ class UserController extends Controller
     public function show(int $id)
     {
         $response = null;
-        try {
-            $user = $this->userService->findById($id);
+        $user = $this->userService->findById($id);
 
-            if (!$user) {
-                if (request()->wantsJson()) {
-                    $response = response()->json([
-                        'success' => false,
-                        'message' => 'Pengguna tidak ditemukan',
-                    ], 404);
-                } else {
-                    $response = back()->with(
-                        'error',
-                        'Pengguna tidak ditemukan'
-                    );
-                }
+        if (!$user) {
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pengguna tidak ditemukan',
+                ], 404);
+            }
+            abort(404);
+        }
+
+        try {
+            if (request()->wantsJson()) {
+                $response = response()->json([
+                    'success' => true,
+                    'data' => $user
+                ]);
             } else {
-                if (request()->wantsJson()) {
-                    $response = response()->json([
-                        'success' => true,
-                        'data' => $user
-                    ]);
-                } else {
-                    $response = Inertia::render('Users/Show', [
-                        'user' => $user,
-                        'auth' => [
-                            'user' => auth()->user(),
-                        ],
-                    ]);
-                }
+                $response = Inertia::render('Users/Show', [
+                    'user' => $user,
+                    'auth' => [
+                        'user' => auth()->user(),
+                    ],
+                ]);
             }
         } catch (\Exception $e) {
             if (request()->wantsJson()) {
@@ -172,6 +169,7 @@ class UserController extends Controller
         }
         return $response;
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -205,34 +203,32 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, int $id)
     {
         $response = null;
+        $user = $this->userService->findById($id);
+
+        if (!$user) {
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'User not found'], 404);
+            }
+            abort(404);
+        }
+
         try {
             $user = $this->userService->update($id, $request->validated());
 
-            if (!$user) {
-                if ($request->wantsJson()) {
-                    $response = response()->json([
-                        'success' => false,
-                        'message' => 'User not found'
-                    ], 404);
-                } else {
-                    $response = back()->with('error', 'User not found');
-                }
+            if ($request->wantsJson()) {
+                $response = response()->json([
+                    'success' => true,
+                    'message' => 'User berhasil diperbarui',
+                    'data' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'updated_at' => $user->updated_at,
+                    ],
+                ]);
             } else {
-                if ($request->wantsJson()) {
-                    $response = response()->json([
-                        'success' => true,
-                        'message' => 'User berhasil diperbarui',
-                        'data' => [
-                            'id' => $user->id,
-                            'name' => $user->name,
-                            'email' => $user->email,
-                            'updated_at' => $user->updated_at,
-                        ],
-                    ]);
-                } else {
-                    $response = redirect()->route('users.index')
-                        ->with('success', 'User berhasil diperbarui');
-                }
+                $response = redirect()->route('users.index')
+                    ->with('success', 'User berhasil diperbarui');
             }
         } catch (ValidationException $e) {
             if ($request->wantsJson()) {
@@ -267,31 +263,29 @@ class UserController extends Controller
     public function destroy(int $id)
     {
         $response = null;
-        try {
-            $deleted = $this->userService->delete($id);
+        $user = $this->userService->findById($id);
 
-            if (!$deleted) {
-                if (request()->wantsJson()) {
-                    $response = response()->json([
-                        'success' => false,
-                        'message' => 'Pengguna tidak ditemukan atau gagal dihapus',
-                    ], 404);
-                } else {
-                    $response = back()->with(
-                        'error',
-                        'Pengguna tidak ditemukan atau gagal dihapus'
-                    );
-                }
+        if (!$user) {
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pengguna tidak ditemukan',
+                ], 404);
+            }
+            abort(404);
+        }
+        
+        try {
+            $this->userService->delete($id);
+
+            if (request()->wantsJson()) {
+                $response = response()->json([
+                    'success' => true,
+                    'message' => 'Pengguna berhasil dihapus',
+                ]);
             } else {
-                if (request()->wantsJson()) {
-                    $response = response()->json([
-                        'success' => true,
-                        'message' => 'Pengguna berhasil dihapus',
-                    ]);
-                } else {
-                    $response = redirect()->route('users.index')
-                        ->with('success', 'Pengguna berhasil dihapus');
-                }
+                $response = redirect()->route('users.index')
+                    ->with('success', 'Pengguna berhasil dihapus');
             }
         } catch (\Exception $e) {
             if (request()->wantsJson()) {
